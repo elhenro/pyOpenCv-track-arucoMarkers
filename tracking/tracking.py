@@ -35,13 +35,13 @@ async def on_track(position):
 
     id, x, y, bearing = position
     message = {
-        "id": id,
+        "id": int(id),
         "x":x,
         "y":y,
         "bearing":bearing
     }
     #message = json.dumps(message)
-        
+
     for socket in sockets:
         await socket.send(json.dumps(message))
 

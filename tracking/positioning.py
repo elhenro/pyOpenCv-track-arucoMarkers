@@ -1,3 +1,4 @@
+## david
 import numpy as np
 import math
 import cv2
@@ -9,11 +10,15 @@ import asyncio
 import logging
 #import time
 import concurrent
+## us
+import traceback
+import statistics
 
 
 
+file_out = 'out/test5.jpg'
 RESOLUTION = (1008,1008)
-FRAMERATE = 20
+FRAMERATE = 30
 WINDOWS_SIZE = 5
 
 DICTIONARY = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
@@ -40,22 +45,64 @@ def calc_bearing(rvec):
 
 def find_markers(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+    # cv2.imwrite(file_out, frame)
     corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(gray, DICTIONARY, parameters=PARAMETERS)
     rvecs, tvecs, _objPoints = cv2.aruco.estimatePoseSingleMarkers(corners, MARKER_EDGE, CAMERA_MATRIX, DIST_COEFFS)
+
+    h,w = frame.shape[:2] # frame - original frame captured from camera
+    newCameraMatrix, roi = cv2.getOptimalNewCameraMatrix(CAMERA_MATRIX, DIST_COEFFS, (w,h), 1, (w,h))
+
+
+    ### testing to get the undistorted image
+    ### -> fail
+    # newcameramtx, roi = cv2.getOptimalNewCameraMatrix(CAMERA_MATRIX, DIST_COEFFS, (w,h), 1, (w,h))
+    # dst = cv2.undistort(gray, CAMERA_MATRIX, DIST_COEFFS, None, newcameramtx)
+    # x, y, w, h = roi
+    # # dst = dst[y:y+h, x:x+w]
+    # cv2.imwrite(file_out, dst)
 
     result = set()
     if ids is None:
         return result
 
     for i in range(0, len(ids)):
-        id = str(ids[i][0])
+        try:
+            id = str(ids[i][0])
 
-        x = tvecs[i][0][0]
-        y = tvecs[i][0][1]
-        bearing = calc_bearing(rvecs[i][0])
-        result.add((id, x,y,bearing))
 
+            marker = corners[i]
+
+            undistortedMarker = cv2.undistortPoints(marker, CAMERA_MATRIX, DIST_COEFFS, P=newCameraMatrix)
+            # print(marker)
+            # print("------------")
+            # print(undistortedMarker[0][i][0])
+            # print(tvecs[i][0][0])
+            # print(undistortedMarker[0][i])
+            # print(undistortedMarker[0])
+
+
+            x1 = marker[0][0][0]
+            x2 = marker[0][2][0]
+            y1 = marker[0][0][1]
+            y2 = marker[0][2][1]
+            xCenter = (x1 + x2)/2
+            yCenter = (y1 + y2)/2
+
+
+            # print("Original %s:" % ids[i][0])
+            # print(marker)
+            #
+            # print('Undistorted %s:' % ids[i][0])
+            # print(undistortedMarker)
+
+            # x = tvecs[i][0][0]
+            # y = tvecs[i][0][1]
+            x = xCenter
+            y = yCenter
+            bearing = calc_bearing(rvecs[i][0])
+            result.add((id, x,y,bearing))
+        except Exception:
+            traceback.print_exc()
     return result
 
 class PositioningSystem:
@@ -77,7 +124,7 @@ class PositioningSystem:
         camera = PiCamera()
         camera.resolution = RESOLUTION
         camera.framerate = FRAMERATE
-
+        watchMarker = {}
         rawCapture = PiRGBArray(camera, size=RESOLUTION)
         # allow the camera to warmup
         await asyncio.sleep(0.1)
@@ -89,12 +136,48 @@ class PositioningSystem:
 
             # grab an image from the camera
             frame = capture.array
+            # xMediaMarkers = []
+            # yMediaMarkers = []
+            # bMediaMarkers = []
+
             markers = find_markers(frame)
             for marker in markers:
-                await self._on_update(marker)
+                try:
+                    # if marker[0] not in watchMarker:
+                    #
+                    # watchMarker[marker[0]] = [[[marker[1]],[marker[2]], [marker[3]]]]
+                    # # print(watchMarker)
+                    # for key in watchMarker.keys():
+                    #     if marker[0] == key:
+                    #         watchMarker[key[0]].append(marker[1])
+                    #         watchMarker[key[1]].append(marker[2])
+                    #         watchMarker[key[2]].append(marker[3])
+                    #
+                    #     if len(key) > 3:
+                    #         newX = statistics.median(key[0])
+                    #         newY = statistics.median(key[1])
+                    #         newB = statistics.median(key[2])
+                    #
+                    #         ## recreate marker
+                    #         #medianMarker = [[]]
+                    #
+                    #         ## reset key
+                    #         watchMarker[key] = []
+                    #         # print(newX,  newY, newB)
+                    #         # xMediaMarkers = []
+                    #         # yMediaMarkers = []
+                    #         # bMediaMarkers = []
+                    #
+                    #         # print(marker)
+                    #
+                    #         await self._on_update(marker)
+                    await self._on_update(marker)
+
+                except Exception:
+                    traceback.print_exc()
+
 
             rawCapture.truncate(0)
-
         camera.close()
 
 # Create a limited thread pool.
