@@ -52,7 +52,7 @@ for i in range(0, len(ids)):
     grad = math.degrees(angles_from_rvec(rvecs[i]))
 
     cv2.imwrite(out_file, frame)
-    print("rotation ", grad)
+    print "rotation ", grad
 
 
 
