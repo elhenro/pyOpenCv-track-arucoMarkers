@@ -1,3 +1,9 @@
+#
+#
+#
+## cli USAGE for this script: $ python3 serve.py in.jpg
+##                            # python3 [this] [image_in]
+
 import sys
 import math
 import numpy as np
