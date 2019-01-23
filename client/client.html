@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="simulation">
+    <div class="settings">
+      <div class="cases">
+        <a href="?case=1"><button type="button" id="case41" name="button"></button></a>
+        <a href="?case=3"><button type="button" id="case61" name="button"></button></a>
+        <a href="?case=2"><button type="button" id="case42" name="button"></button></a>
+        <a href="?case=4"><button type="button" id="case62" name="button"></button></a>
+      </div>
+      <div class="opt">
+        <button type="button" id="show" name="button"><div class="no-raindrop icon"></div></button>
+      </div>
+    </div>
+    <div id="dot"></div>
+    <div class="line"></div>
+
+    <div class="line2"></div>
+    <div class="space">
+      <img src="src/10.svg" class="marker" id="marker10" alt="">
+    </div>
+</main>
+<script>
+
+    $('#show').bind('click', function() {
+      $('canvas').toggleClass('shown');
+      $('#dot').toggleClass('shown');
+    });
+    var ws = new WebSocket('ws://10.51.6.1:5678'),
+        messages = document.createElement('ul');
+    ws.onmessage = function (event) {
+        var messages = document.getElementsByTagName('ul')[0],
+            message = document.createElement('li'),
+            content = document.createTextNode(event.data);
+            marker = JSON.parse(event.data)
+            img = document.getElementById('marker')
+        // message.appendChild(content);
+        // messages.appendChild(message);
+        console.log(marker);
+        //$('.test').css('background-image', 'url('+ marker.image + ')');
+        //$('#marker').css('transform', 'rotate(' + marker.rotation + 'deg)')
+        if (marker.id == 10) {
+          $('#marker10').css('transform', 'translate('+ marker.x +'px, '+ marker.y +'px) rotate('+marker.bearing+'deg)');
+        }
+        if (marker.id[0] == 10) {
+          $('#marker10').css('transform', 'translate('+ marker.position[0][0] +'px, '+marker.position[0][1]+'px) rotate('+marker.rotation+'deg)');
+        }
+        //$('#marker').css('transform', 'translate('+ marker.position[0][0] +'px, '+marker.position[0][0]+'px) rotate('+marker.rotation+'deg)');
+    };
+    document.body.appendChild(messages);
+
+
+</script>
+</body>
+</html>
