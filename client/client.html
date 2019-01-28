@@ -7,34 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="visu">
+    <!-- <div class="line"></div>
+    <div class="line2"></div> -->
+    <!-- <img src="marker/10.svg" class="marker" id="marker10" alt=""> -->
+  </div>
 
-<main class="simulation">
-    <div class="settings">
-      <div class="cases">
-        <a href="?case=1"><button type="button" id="case41" name="button"></button></a>
-        <a href="?case=3"><button type="button" id="case61" name="button"></button></a>
-        <a href="?case=2"><button type="button" id="case42" name="button"></button></a>
-        <a href="?case=4"><button type="button" id="case62" name="button"></button></a>
-      </div>
-      <div class="opt">
-        <button type="button" id="show" name="button"><div class="no-raindrop icon"></div></button>
-      </div>
-    </div>
-    <div id="dot"></div>
-    <div class="line"></div>
 
-    <div class="line2"></div>
-    <div class="space">
-      <img src="src/10.svg" class="marker" id="marker10" alt="">
-    </div>
-</main>
 <script>
 
-    $('#show').bind('click', function() {
-      $('canvas').toggleClass('shown');
-      $('#dot').toggleClass('shown');
-    });
-    var ws = new WebSocket('ws://10.51.6.1:5678'),
+    var markers = [];
+    var ws = new WebSocket('ws://10.51.6.5:5678'),
         messages = document.createElement('ul');
     ws.onmessage = function (event) {
         var messages = document.getElementsByTagName('ul')[0],
@@ -47,7 +30,18 @@
         console.log(marker);
         //$('.test').css('background-image', 'url('+ marker.image + ')');
         //$('#marker').css('transform', 'rotate(' + marker.rotation + 'deg)')
-        if (marker.id == 10) {
+
+
+        if (!markers.includes(marker.id)) {
+          markers.push(marker.id);
+
+          $('.visu').append('<img src="marker/' + marker.id + '.svg" class="marker" id="' + marker.id + '">');
+
+        }
+
+        $('#' + marker.id ).css('transform', 'translate('+ marker.x +'px, '+ marker.y +'px) rotate('+marker.bearing+'deg)');
+
+        if (marker.id == 1) {
           $('#marker10').css('transform', 'translate('+ marker.x +'px, '+ marker.y +'px) rotate('+marker.bearing+'deg)');
         }
         if (marker.id[0] == 10) {

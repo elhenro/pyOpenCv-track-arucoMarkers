@@ -2,20 +2,8 @@
 *{
   box-sizing: border-box;
 }
-@keyframes pulse {
-  0%{
-    width: 20px;
-    height: 20px;
-  }
-  50%{
-    width: 30px;
-    height: 30px;
-  }
-  100%{
-    width: 20px;
-    height: 20px;
-  }
-}
+
+
 body{
   display: flex;
   justify-content: center;
@@ -27,6 +15,14 @@ body{
   color: #999;
   box-sizing: border-box;
 }
+
+.visu{
+  width: 1008px;
+  height: 1008px;
+  background-image: url('test4.jpg');
+  position: relative;
+}
+
 .line, .line2{
   color: aqua;
   opacity: 0.2;
@@ -43,104 +39,8 @@ body{
   height: 600px;
   box-shadow: 100px 0 0 0 currentColor, 200px 0 0 0 currentColor, 300px 0 0 0 currentColor, 400px 0 0 0 currentColor, 500px 0 0 0 currentColor, 600px 0 0 0 currentColor;
 }
-#dot{
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  opacity: 0.5;
-  animation-name: pulse;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  transition: 200ms
-}
-.settings{
-  height: 200px;
-  width: 600px;
-  /* box-shadow: inset 0 5px 20px -1px #111; */
-  border: solid 1px hotpink;
-  opacity: 0.3;
-  border-bottom: 0px;
-  padding: 10px;
-  display: flex;
-}
-.cases{
-  width: 350px;
-
-}
-.cases button{
-  background-color: rgba(0,0,0,0);
-  border: solid 1px hotpink;
-  border-radius: 3px;
-  height: 80px;
-  width: 160px;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  position: relative;
-  cursor: pointer;
-  transition: 300ms;
-  color: hotpink;
-}
-button{
-background-color: rgba(0,0,0,0);
-border: solid 1px hotpink;
-border-radius: 3px;
-height: 80px;
-width: 80px;
-margin-bottom: 10px;
-margin-right: 10px;
-position: relative;
-cursor: pointer;
-transition: 300ms;
-color: hotpink;
-}
-.cases button::after{
-  height: 60px;
-  width: 1px;
-  content: ' ';
-  background-color: hotpink;
-  display: block;
-  position: absolute;
-  top: 10px;
-  left: 50%;
-}
-button:hover{
-  transform: scale(1.1);
-}
-.cases button::before{
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  content:' ';
-  color: GreenYellow;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
 
-#case41::before{
-  box-shadow:
-    -20px 20px 0 0 currentColor, -60px 20px 0 0 currentColor, -60px -20px 0 0 currentColor, -20px -20px 0 0 currentColor,
-    20px 00px 0 0 currentColor, 30px 0px 0 0 currentColor, 50px 0px 0 0 currentColor, 60px 0px 0 0 currentColor;
-}
-#case42::before{
-  box-shadow:
-    -30px 10px 0 0 currentColor, -50px 10px 0 0 currentColor, -50px -10px 0 0 currentColor, -30px -10px 0 0 currentColor,
-    20px 10px 0 0 currentColor, 50px 10px 0 0 currentColor, 60px -10px 0 0 currentColor, 30px -10px 0 0 currentColor;
-}
-#case61::before{
-  box-shadow:
-    -20px -20px 0 0 currentColor, -30px -20px 0 0 currentColor, -40px -20px 0 0 currentColor, -20px -10px 0 0 currentColor, -30px -10px 0 0 currentColor, -20px 0px 0 0 currentColor,
-    40px -20px 0 0 currentColor, 40px 20px 0 0 currentColor, 30px -10px 0 0 currentColor, 30px 10px 0 0 currentColor, 50px -10px 0 0 currentColor, 50px 10px 0 0 currentColor;
-}
-#case62::before{
-  box-shadow:
-    -30px -20px 0 0 currentColor, -30px 20px 0 0 currentColor, -40px -10px 0 0 currentColor, -40px 10px 0 0 currentColor, -50px 20px 0 0 currentColor, -60px 0px 0 0 currentColor,
-    40px -10px 0 0 currentColor, 40px 10px 0 0 currentColor, 30px -10px 0 0 currentColor, 30px 10px 0 0 currentColor, 50px -10px 0 0 currentColor, 50px 10px 0 0 currentColor;
-}
 .marker{
 width: 50px;
 height: 50px;
@@ -149,37 +49,4 @@ bottom: 0;
 right: 0;
 transform: translate(50%, 50%);
 border-top: solid 2px #34e4da;
-}
-.space{
-width: 600px;
-height: 600px;
-position: absolute;
-}
-.no-raindrop.icon {
-color: GreenYellow;
-position: absolute;
-margin-left: 5px;
-margin-top: 5px;
-width: 10px;
-height: 10px;
-border: solid 1px currentColor;
-border-radius: 6px 6px 6px 0;
--webkit-transform: rotate(135deg);
-      transform: rotate(135deg);
-}
-.no-raindrop.icon:after {
-content: '';
-position: absolute;
-top: 5px;
-left: -5px;
-width: 19px;
-height: 1px;
-background-color: currentColor;
-}
-.opt{
-width: 200px;
-}
-.shown{
-opacity: 0;
-box-shadow: none;
 }

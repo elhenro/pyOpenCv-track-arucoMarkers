@@ -1,3 +1,4 @@
+.DS_Store
 calibrate
 in.jpg
 out.jpg
@@ -11,3 +12,7 @@ out.jpeg
 calibresult.png
 out_undistorted.jpeg
 test2_corners_7.jpeg
+!marker/
+!test2.jpg
+!test3.jpg
+!test4.jpg
