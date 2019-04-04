@@ -1,57 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Marker - client</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="visu">
-    <!-- <div class="line"></div>
-    <div class="line2"></div> -->
-    <!-- <img src="marker/10.svg" class="marker" id="marker10" alt=""> -->
-  </div>
+    <link rel="stylesheet" href="style.css">1
+  <body>
+    <div class="visu">
+      <!-- <div class="line"></div>
+      <div class="line2"></div> -->
+      <div class="deadzoneTop"></div>
+      <div class="deadzoneBottom"></div>
+      <div class="deadzoneLeft"></div>
+      <div class="deadzoneRight"></div>
+      <div class="check"></div>
+    </div>
 
+    <script>
 
-<script>
+        var markers = [];
+        var ws = new WebSocket('ws://10.51.7.228:5678');
+        ws.onmessage = function (event) {
+          var marker = JSON.parse(event.data);
 
-    var markers = [];
-    var ws = new WebSocket('ws://10.51.6.5:5678'),
-        messages = document.createElement('ul');
-    ws.onmessage = function (event) {
-        var messages = document.getElementsByTagName('ul')[0],
-            message = document.createElement('li'),
-            content = document.createTextNode(event.data);
-            marker = JSON.parse(event.data)
-            img = document.getElementById('marker')
-        // message.appendChild(content);
-        // messages.appendChild(message);
-        console.log(marker);
-        //$('.test').css('background-image', 'url('+ marker.image + ')');
-        //$('#marker').css('transform', 'rotate(' + marker.rotation + 'deg)')
+          // cm to pixel (4 meter space)
+          var newX = (marker.x * 4) + 100;
+          var newY = (marker.y * 4) + 100;
 
+          // fuck das geht ja nicht ...
 
-        if (!markers.includes(marker.id)) {
-          markers.push(marker.id);
+          console.log(marker);
 
-          $('.visu').append('<img src="marker/' + marker.id + '.svg" class="marker" id="' + marker.id + '">');
+          if (!markers.includes(marker.id)) {
+            markers.push(marker.id);
+            $('.visu').append('<img src="marker/' + marker.id + '.svg" class="marker" id="' + marker.id + '">');
+          }
 
-        }
+          $('#' + marker.id ).css('transform', 'translate('+ newX +'px, '+ newY +'px) rotate('+marker.bearing+'deg)');
 
-        $('#' + marker.id ).css('transform', 'translate('+ marker.x +'px, '+ marker.y +'px) rotate('+marker.bearing+'deg)');
+        };
 
-        if (marker.id == 1) {
-          $('#marker10').css('transform', 'translate('+ marker.x +'px, '+ marker.y +'px) rotate('+marker.bearing+'deg)');
-        }
-        if (marker.id[0] == 10) {
-          $('#marker10').css('transform', 'translate('+ marker.position[0][0] +'px, '+marker.position[0][1]+'px) rotate('+marker.rotation+'deg)');
-        }
-        //$('#marker').css('transform', 'translate('+ marker.position[0][0] +'px, '+marker.position[0][0]+'px) rotate('+marker.rotation+'deg)');
-    };
-    document.body.appendChild(messages);
-
-
-</script>
-</body>
+    </script>
+  </body>
 </html>

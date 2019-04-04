@@ -68,7 +68,8 @@ def find_markers(frame):
     for i in range(0, len(ids)):
         try:
             id = str(ids[i][0])
-
+            if id > 20:
+                return
 
             marker = corners[i]
 

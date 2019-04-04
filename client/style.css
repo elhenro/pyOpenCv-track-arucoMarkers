@@ -40,6 +40,50 @@ body{
   box-shadow: 100px 0 0 0 currentColor, 200px 0 0 0 currentColor, 300px 0 0 0 currentColor, 400px 0 0 0 currentColor, 500px 0 0 0 currentColor, 600px 0 0 0 currentColor;
 }
 
+.deadzoneLeft,  .deadzoneTop, .deadzoneBottom, .deadzoneRight{
+  position: absolute;
+  color: rgb(255, 94, 94, 0.8);
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    currentColor 1px,
+    transparent 3px,
+    transparent 10px,
+    currentColor 1px
+  );
+  height: 100%;
+  width: 100px;
+}
+.deadzoneBottom, .deadzoneTop{
+  height: 100px;
+  width: 100%;
+}
+
+.deadzoneLeft, .deadzoneTop{
+  top: 0;
+  left: 0;
+}
+
+.deadzoneBottom{
+  bottom: 0;
+  left: 0;
+  height: 130px;
+}
+.deadzoneRight{
+  right: 0;
+  top: 0;
+  width: 120px;
+}
+
+.check{
+  width: 5px;
+  height: 5px;
+  background-color: blue;
+  border-radius: 50%;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+}
 
 .marker{
 width: 50px;
@@ -49,5 +93,5 @@ top: -20px;
 left: -20px;
 /* transform: translate(50%, 50%); */
 border-top: solid 2px #34e4da;
-transform-origin: right bottom;
+transform-origin: center center;
 }
